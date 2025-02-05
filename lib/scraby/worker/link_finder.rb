@@ -4,6 +4,7 @@ require "scraby/worker/base"
 
 module Scraby
   module Worker
+    # A worker tp find a link to next page.
     class LinkFinder < Base
       def collect
         raise NotImplementedError

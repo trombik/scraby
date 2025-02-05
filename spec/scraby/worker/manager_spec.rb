@@ -3,15 +3,13 @@
 require "scraby/worker/manager"
 
 class MyManager < Scraby::Worker::Manager
-  def run!
-  end
+  def run!; end
 end
 
 class MyFailedManager < Scraby::Worker::Manager
 end
 
 RSpec.describe Scraby::Worker::Manager do
-
   let(:worker) { MyManager.new(test_file) }
   let(:worker_without_run_undefined) { MyFailedManager.new(test_file) }
   let(:test_file) { Pathname.new(File.expand_path(__FILE__)).parent.parent.parent / "data" / "test.html" }
@@ -21,6 +19,7 @@ RSpec.describe Scraby::Worker::Manager do
       expect(worker.url).to eq test_file.to_s
     end
   end
+
   describe "#run!" do
     context "when #run! method is defined by user" do
       it "does not throw" do

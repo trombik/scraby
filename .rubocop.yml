@@ -1,5 +1,15 @@
+---
+require:
+  - rubocop-rspec
+  - rubocop-rake
+
 AllCops:
   TargetRubyVersion: 3.0
+  NewCops: enable
+  Exclude:
+    - "attic/**"
+    - "exe/**"
+
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes

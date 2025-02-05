@@ -4,20 +4,17 @@ require "scraby/worker/link_finder"
 
 class MyWorker < Scraby::Worker::LinkFinder
   def collect
-    links = []
-    doc.css("ul > li > a").each do |a|
-      links << a.attributes["href"].text
+    doc.css("ul > li > a").map do |a|
+      a.attributes["href"].text
     end
-    links
   end
 end
 
 RSpec.describe Scraby::Worker::LinkFinder do
-
   let(:worker_not_implemented) { described_class.new }
   let(:worker) { MyWorker.new }
   let(:test_file) { Pathname.new(File.expand_path(__FILE__)).parent.parent.parent / "data" / "links.html" }
-  let(:links) { [ "a.html", "b.html" ] }
+  let(:links) { ["a.html", "b.html"] }
 
   describe "#new" do
     it "dose not throw" do

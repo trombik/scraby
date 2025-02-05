@@ -4,7 +4,6 @@ require "scraby/worker/base"
 require "open-uri"
 
 RSpec.describe Scraby::Worker::Base do
-
   let(:worker) { described_class.new }
   let(:test_file) { Pathname.new(File.expand_path(__FILE__)).parent.parent.parent / "data" / "test.html" }
 
@@ -27,7 +26,6 @@ RSpec.describe Scraby::Worker::Base do
   end
 
   describe "#fetch" do
-
     it "reads a local file" do
       expect(worker.fetch(test_file.to_s).html.class).to eq String
     end
@@ -73,7 +71,7 @@ RSpec.describe Scraby::Worker::Base do
   describe "#source_name" do
     context "when a source name is given" do
       it "returns the given source name" do
-        worker = Scraby::Worker::Base.new(source_name: "Foo")
+        worker = described_class.new(source_name: "Foo")
         expect(worker.fetch(test_file.to_s).parse.source_name).to eq "Foo"
       end
     end

@@ -11,15 +11,17 @@ module Scraby
     class Error
       class UndefinedURL < StandardError
       end
+
       class NoHTMLFound < StandardError
       end
     end
 
+    # The base class for workers
     class Base
-
       include Scraby::Filter
 
       attr_accessor :date, :doc, :html
+
       def initialize(**args)
         @title = args[:title] || nil
         @date = Date.today
@@ -29,32 +31,26 @@ module Scraby
       end
 
       def wait(sec = 2)
-        sec = sec + rand(3)
+        sec += rand(3)
         sleep sec
         sec
       end
 
-      def title
-        if @doc
-          @doc.at_css("title").text
-        end
-      end
-
       def fetch(arg)
-
         raise Scraby::Worker::Error::UndefinedURL if arg.nil?
+
         uri = URI.parse(arg)
         @html = if uri.scheme.nil?
-          File.read(uri.to_s)
-        else
-          URI.parse(uri.to_s).open.read
-        end
+                  File.read(uri.to_s)
+                else
+                  URI.parse(uri.to_s).open.read
+                end
         self
       end
 
       def parse
-
         raise Scraby::Worker::Error::NoHTMLFound unless @html
+
         @doc = Nokogiri::HTML.parse(@html)
         self
       end

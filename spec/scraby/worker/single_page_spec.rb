@@ -5,13 +5,13 @@ require "scraby/worker/single_page"
 class MySinglePageWorker < Scraby::Worker::SinglePage
   def collect
     terms = []
-    self.doc.css("dl > dt").each do |dt|
+    doc.css("dl > dt").each do |dt|
       term = dt.text
       description = dt.next_element.text
 
       terms << {
         name: term,
-        description: description,
+        description: description
       }
     end
     terms
@@ -19,17 +19,18 @@ class MySinglePageWorker < Scraby::Worker::SinglePage
 end
 
 RSpec.describe Scraby::Worker::SinglePage do
-
   let(:worker_not_implemented) { described_class.new }
   let(:worker) { MySinglePageWorker.new }
   let(:test_file) { Pathname.new(File.expand_path(__FILE__)).parent.parent.parent / "data" / "test.html" }
-  let(:test_file_with_issues) { Pathname.new(File.expand_path(__FILE__)).parent.parent.parent / "data" / "filters.html" }
-  let(:first_term) {
+  let(:test_file_with_issues) do
+    Pathname.new(File.expand_path(__FILE__)).parent.parent.parent / "data" / "filters.html"
+  end
+  let(:first_term) do
     {
       name: "Foo",
       description: "Something"
     }
-  }
+  end
 
   describe "#new" do
     it "does no throw" do
@@ -54,9 +55,7 @@ RSpec.describe Scraby::Worker::SinglePage do
       it "returns parsed terms" do
         expect(worker.fetch(test_file.to_s).parse.collect.class).to be Array
       end
-    end
 
-    context "when a document is parsed" do
       it "returns parsed terms and the first one is correct" do
         expect(worker.fetch(test_file.to_s).parse.collect.first).to eq first_term
       end
@@ -65,15 +64,14 @@ RSpec.describe Scraby::Worker::SinglePage do
 
   describe "#replace_multiple_spaces" do
     context "when a text with multiple spaces is given" do
-
       it "filters the spaces with a single space" do
         term = worker.fetch(test_file_with_issues.to_s).parse.collect.first
-        expect(worker.replace_multiple_spaces(term)).to eq({ name: "Foo multiple spaces", description: "Something multiple spaces " })
+        expect(worker.replace_multiple_spaces(term)).to eq({ name: "Foo multiple spaces",
+                                                             description: "Something multiple spaces " })
       end
     end
 
     context "when a text with multiple zenkaku spaces is given" do
-
       it "filters the spaces with a single space" do
         term = worker.fetch(test_file_with_issues.to_s).parse.collect[1]
         expect(worker.replace_multiple_spaces(term)[:name]).to eq("Bar zenkaku spaces")
