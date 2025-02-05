@@ -7,9 +7,9 @@ AllCops:
   TargetRubyVersion: 3.0
   NewCops: enable
   Exclude:
-    - "attic/**"
-    - "exe/**"
-
+    - "attic/**/*"
+    - "exe/**/*"
+    - "vendor/**/*"
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
