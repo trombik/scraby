@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 module Scraby
+  # Helper methods for workers.
   module Filter
-
     # Strips new lines in a term. The filter strips all the newlines in :name
     # and :description.
     #
     # @param term [Hash] A term
     # @return [Hash] The term with newlines removed
     def strip_newlines(term)
-      term[:name] = term[:name].gsub(/\n/, "")
-      term[:description] = term[:description].gsub(/\n/, "")
+      term[:name] = term[:name].gsub("\n", "")
+      term[:description] = term[:description].gsub("\n", "")
       term
     end
 
@@ -31,8 +31,7 @@ module Scraby
     # @return [Hash] The term after the filters applied
     def filter_default(term)
       term = strip_newlines(term)
-      term = replace_multiple_spaces(term)
-      term
+      replace_multiple_spaces(term)
     end
   end
 end

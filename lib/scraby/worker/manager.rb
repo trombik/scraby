@@ -3,8 +3,8 @@
 
 module Scraby
   module Worker
+    # A class to manage workers.
     class Manager
-
       # A manager worker that manage collecting terms.
       #
       # Define a class that inherits this class. Override {#run} by

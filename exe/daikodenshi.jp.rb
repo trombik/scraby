@@ -30,7 +30,7 @@ class MyManager < Scraby::Worker::Manager
     worker.fetch(url).parse
     source_name = worker.title
     source_url = url
-    genres = [ "manufacturing" ]
+    genres = ["manufacturing"]
 
     terms = worker.collect
     terms.map do |term|
